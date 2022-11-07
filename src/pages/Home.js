@@ -41,7 +41,7 @@ const Home = () => {
 
     return (
         <div className='container py-5'>
-            <Table striped bordered hover variant="dark">
+            <Table responsive striped bordered hover variant="dark">
             <thead>
             <tr>
                 <th>S/N</th>              
