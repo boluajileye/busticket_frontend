@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import instance from '../api/Api_instance';
+import DateTimePicker from 'react-datetime-picker/dist/entry.nostyle';
 
 const Schedule = () => {
-  // const [data, setData] = useState([]);
+  
+  const [value, onChange] = useState(new Date());
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -55,20 +57,11 @@ const Schedule = () => {
               </div>
               <div className="form-group col-md-6 mb-2">
                 <label for="inputEmail4">Take Off Time</label>
-                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    renderInput={(props) => <TextField {...props} />}
-                    label="DateTimePicker"
-                    value={value}
-                    onChange={(newValue) => {
-                      setValue(newValue);
-                    }}
-                  />
-                </LocalizationProvider> */}
+                <DateTimePicker onChange={onChange} value={value} className="bg-dark text-white"/>
               </div>
               <div className="form-group col-md-6 mb-2">
                 <label for="inputPassword4">Drop Off Time</label>
-                {/* <DateTimePicker date={date} /> */}
+                <DateTimePicker onChange={onChange} value={value} className="bg-dark text-white"/>
               </div>
             </div>
             <div className="form-group col-md-6 mb-2">

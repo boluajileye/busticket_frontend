@@ -8,21 +8,21 @@ const Home = () => {
         await instance({
             url: "busticket/",
             method: "GET",
-          }).then((res) => {
-            
+        }).then((res) => {
+
             setBusTicket(res.data.busticket);
             console.log(res.data.busticket);
-          });
-        
-      };
-      
-      useEffect(() => {
+        });
+
+    };
+
+    useEffect(() => {
         getData();
-      }, []);
-      const mappedBusTicket = busTicket.map((busTicket, index) =>{
+    }, []);
+    const mappedBusTicket = busTicket.map((busTicket, index) => {
         return (
             <tr key={busTicket.id}>
-                <td>{index+1}</td>
+                <td>{index + 1}</td>
                 <td>{busTicket.user.name}</td>
                 <td>{busTicket.user.email}</td>
                 <td>{busTicket.bus_schedule.take_off}</td>
@@ -37,27 +37,33 @@ const Home = () => {
                 <td>{busTicket.bus.busCapacity}</td> */}
             </tr>
         );
-      });
+    });
 
     return (
+
         <div className='container py-5'>
+            <div className='mb-3'>
+                <h3 className="card-header d-flex justify-content-between align-items-center text-white">
+                    Bus Ticket List
+                </h3>
+            </div>
             <Table responsive striped bordered hover variant="dark">
-            <thead>
-            <tr>
-                <th>S/N</th>              
-                <th>Buyer Name</th>
-                <th>Buyer Email</th>
-                <th>Take Off</th>
-                <th>Destination</th>
-                <th>Take Off Time</th>
-                <th>Drop Off Time</th>   
-                <th>Ticket Price</th>                
-                <th>Reference</th>
-            </tr>
-        </thead>
-        <tbody>
-            {mappedBusTicket}
-        </tbody>
+                <thead>
+                    <tr>
+                        <th className='bg-white text-black'>S/N</th>
+                        <th className='bg-white text-black'>Buyer Name</th>
+                        <th className='bg-white text-black'>Buyer Email</th>
+                        <th className='bg-white text-black'>Take Off</th>
+                        <th className='bg-white text-black'>Destination</th>
+                        <th className='bg-white text-black'>Take Off Time</th>
+                        <th className='bg-white text-black'>Drop Off Time</th>
+                        <th className='bg-white text-black'>Ticket Price</th>
+                        <th className='bg-white text-black'>Reference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {mappedBusTicket}
+                </tbody>
             </Table>
         </div>
     )
