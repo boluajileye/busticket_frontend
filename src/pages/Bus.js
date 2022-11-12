@@ -2,24 +2,21 @@ import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
 import instance from '../api/Api_instance';
 import Modal from 'react-bootstrap/Modal';
+import Alert from 'react-bootstrap/Alert';
 
 const Bus = () => {
   const [companyName, setCompanyName] = useState("");
   const [licensePlate, setLicensePlate] = useState("")
   const [driverName, setDriverName] = useState("")
   const [busCapacity, setBusCapacity] = useState("")
+  const [alert, setAlert] = useState("");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [bus, setBus] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+  // const [displayAlert, setDisplayAlert] = useState(true);
 
-  const handleChange = (event) => {
-    setCompanyName(event.target.value);
-    setLicensePlate(event.target.value);
-    setDriverName(event.target.value);
-    setBusCapacity(event.target.value);
-   
-  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -29,19 +26,25 @@ const Bus = () => {
       "driverName": driverName,
       "busCapacity": busCapacity
     });
-  console.log(data);
-  // await instance({
-  //   url: "bus/",
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   data: formData
-  // }).then((res) => {
-  //   console.log(res);
-  // });
- 
-}
+    console.log(data);
+    await instance({
+      url: "bus-store",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    }).then((res) => {
+      console.log(res);
+      setAlert(res.data.message)
+      setRefresh(true);
+      setBusCapacity('');
+      setCompanyName('');
+      setDriverName('');
+      setLicensePlate('')
+    });
+
+  }
 
 
   const getBus = async () => {
@@ -58,7 +61,7 @@ const Bus = () => {
 
   useEffect(() => {
     getBus();
-  }, []);
+  },  [refresh]);
 
   const mappedBus = bus.map((bus, index) => {
     return (
@@ -73,40 +76,47 @@ const Bus = () => {
   });
   return (
     <div className='container py-5'>
+      {alert ?
+      <Alert className='col-sm' key="success" variant="success"  onClose={() => setShow(false)} transition dismissible>
+        {alert}
+      </Alert>
+      :<div></div>}
       <div className='mb-3'>
+
         <h3 className="card-header d-flex justify-content-between align-items-center text-white">
           Bus List
-          <button type="button" className="btn btn-sm btn-secondary px-3 py-2"  onClick={handleShow}>Add Bus</button>
+
+          <button type="button" className="btn btn-sm btn-secondary px-3 py-2" onClick={handleShow}>Add Bus</button>
           <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton className='very-dark  text-white'>
-          <Modal.Title>Add Bus</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className='very-dark'>
-          <form className='very-dark text-white' onSubmit={handleSubmit}>
-            <div className="form-group col-md-6 mb-2">
-              <label>Company Name</label>
-              <input type="text" className="form-control bg-dark text-white" id=""  name='companyName' value={companyName}
-        onChange={handleChange}/>
-            </div>
-            <div className="form-group col-md-6 mb-2">
-              <label>License Plate</label>
-              <input type="text" className="form-control bg-dark text-white" placeholder="ABC-123-DE" name='licensePlate' value={licensePlate}
-        onChange={handleChange}/>
-            </div>
-            <div className="form-group col-md-6 mb-2">
-              <label>Driver Name</label>
-              <input type="text" className="form-control bg-dark text-white" id="" name='driverName' value={driverName}
-        onChange={handleChange}/>
-            </div>
-            <div className="form-group col-md-6 mb-2">
-              <label>Bus Capacity</label>
-              <input type="number" className="form-control bg-dark text-white" id="" name='busCapacity' value={busCapacity}
-        onChange={handleChange}/>
-            </div>
-            <button onClick={handleClose} type="submit" className="btn btn-secondary">Add Bus</button>
-          </form>
-        </Modal.Body>
-      </Modal>
+            <Modal.Header closeButton className='very-dark  text-white'>
+              <Modal.Title>Add Bus</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className='very-dark'>
+              <form className='very-dark text-white' onSubmit={handleSubmit}>
+                <div className="form-group col-md-6 mb-2">
+                  <label>Company Name</label>
+                  <input type="text" className="form-control bg-dark text-white" id="" name='companyName' value={companyName}
+                    onChange={e => setCompanyName(e.target.value)} />
+                </div>
+                <div className="form-group col-md-6 mb-2">
+                  <label>License Plate</label>
+                  <input type="text" className="form-control bg-dark text-white" placeholder="ABC-123-DE" name='licensePlate' value={licensePlate}
+                    onChange={e => setLicensePlate(e.target.value)} />
+                </div>
+                <div className="form-group col-md-6 mb-2">
+                  <label>Driver Name</label>
+                  <input type="text" className="form-control bg-dark text-white" id="" name='driverName' value={driverName}
+                    onChange={e => setDriverName(e.target.value)} />
+                </div>
+                <div className="form-group col-md-6 mb-2">
+                  <label>Bus Capacity</label>
+                  <input type="number" className="form-control bg-dark text-white" id="" name='busCapacity' value={busCapacity}
+                    onChange={e => setBusCapacity(e.target.value)} />
+                </div>
+                <button onClick={handleClose} type="submit" className="btn btn-secondary">Add Bus</button>
+              </form>
+            </Modal.Body>
+          </Modal>
         </h3>
       </div>
       <Table responsive striped bordered hover variant="dark">
