@@ -57,8 +57,8 @@ const Schedule = () => {
       method: "GET",
     }).then((res) => {
 
-      setBusSchedule(res.data.bus);
-      console.log(res.data.bus);
+      setBusSchedule(res.data.bus.data);
+      console.log(res.data.bus.data);
     });
 
   };

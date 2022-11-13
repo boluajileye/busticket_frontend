@@ -3,8 +3,11 @@ import Table from 'react-bootstrap/Table';
 import instance from '../api/Api_instance';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
+/* eslint eqeqeq: 0 */
 
 const Bus = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [licensePlate, setLicensePlate] = useState("")
   const [driverName, setDriverName] = useState("")
@@ -49,24 +52,25 @@ const Bus = () => {
 
   const getBus = async () => {
     await instance({
-      url: "bus/",
+      url: `bus?page=${currentPage}`,
       method: "GET",
     }).then((res) => {
-
-      setBus(res.data.bus);
-      console.log(res.data.bus);
+      setBus(res.data.bus.data);
+      setPage(res.data.bus);
+      // console.log(res.data.bus);
     });
 
   };
 
   useEffect(() => {
     getBus();
-  },  [refresh]);
+    // eslint-disable-next-line
+  }, [refresh]);
 
   const mappedBus = bus.map((bus, index) => {
     return (
       <tr key={bus.id}>
-        <td>{index + 1}</td>
+        <td className='bg-white text-black'>{index + 1}</td>
         <td className='text-capitalize'>{bus.companyName}</td>
         <td className='uppercase'>{bus.licensePlate}</td>
         <td>{bus.driverName}</td>
@@ -74,13 +78,19 @@ const Bus = () => {
       </tr>
     );
   });
+
+  function pagination(index) {
+    setCurrentPage(index)
+    getBus();
+  };
+
   return (
     <div className='container py-5'>
       {alert ?
-      <Alert className='col-sm' key="success" variant="success"  onClose={() => setShow(false)} transition dismissible>
-        {alert}
-      </Alert>
-      :<div></div>}
+        <Alert className='col-sm' key="success" variant="success" onClose={() => setShow(false)} transition dismissible>
+          {alert}
+        </Alert>
+        : <div></div>}
       <div className='mb-3'>
 
         <h3 className="card-header d-flex justify-content-between align-items-center text-white">
@@ -133,6 +143,12 @@ const Bus = () => {
           {mappedBus}
         </tbody>
       </Table>
+      <nav aria-label="Page navigation example">
+        <ul className="pagination justify-content-center">
+          {[...Array.from(Array(page.last_page).keys())].map((num, index) => <li className={`page-item ${currentPage == index + 1 ? "active" : ""}`} key={index}><button onClick={() => { pagination(index + 1); }} className="page-link">{index + 1}</button></li>)}
+        </ul>
+        <h5 className='text-center text-white'>showing range {page.from} - {page.to} of {page.total}</h5>
+      </nav>
     </div>
   )
 }

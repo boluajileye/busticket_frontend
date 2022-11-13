@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
 import instance from '../api/Api_instance';
+/* eslint eqeqeq: 0 */
 
 const Home = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [page, setPage] = useState([]);
     const [busTicket, setBusTicket] = useState([]);
     const getData = async () => {
         await instance({
-            url: "busticket/",
+            url: `busticket?page=${currentPage}`,
             method: "GET",
         }).then((res) => {
-
-            setBusTicket(res.data.busticket);
-            console.log(res.data.busticket);
+            setBusTicket(res.data.busticket.data);
+            setPage(res.data.busticket);
         });
 
     };
 
     useEffect(() => {
         getData();
+        // eslint-disable-next-line
     }, []);
     const mappedBusTicket = busTicket.map((busTicket, index) => {
         return (
             <tr key={busTicket.id}>
-                <td>{index + 1}</td>
+                <td className='bg-white text-black'>{index + 1}</td>
                 <td>{busTicket.user.name}</td>
                 <td>{busTicket.user.email}</td>
                 <td>{busTicket.bus_schedule.take_off}</td>
@@ -38,6 +41,11 @@ const Home = () => {
             </tr>
         );
     });
+
+    function pagination(index) {
+        setCurrentPage(index)
+        getData();
+    };
 
     return (
 
@@ -65,6 +73,13 @@ const Home = () => {
                     {mappedBusTicket}
                 </tbody>
             </Table>
+            <nav aria-label="Page navigation example">
+                <ul className="pagination justify-content-center">
+                    {[...Array.from(Array(page.last_page).keys())].map((num, index) => <li className={`page-item ${currentPage == index + 1 ? "active" : ""}` } key={index}><button onClick={() => { pagination(index + 1); }} className="page-link">{index + 1}</button></li>)}
+                    {/* eslint-disable-next-line */}
+                </ul>
+                <h5 className='text-center text-white'>showing range {page.from} - {page.to} of {page.total}</h5>
+            </nav>
         </div>
     )
 }

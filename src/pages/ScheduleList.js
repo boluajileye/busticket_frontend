@@ -3,8 +3,11 @@ import Table from 'react-bootstrap/Table';
 import instance from '../api/Api_instance';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
+/* eslint eqeqeq: 0 */
 
 const ScheduleList = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState([]);
   const [bus, setBus] = useState("");
   const [takeOffTime, setTakeOffTime] = useState("")
   const [dropOffTime, setDropOffTime] = useState("")
@@ -56,21 +59,20 @@ const ScheduleList = () => {
       url: "bus/",
       method: "GET",
     }).then((res) => {
-
-      setBusSelect(res.data.bus);
-      console.log(res.data.bus);
+      setBusSelect(res.data.bus.data);
+      // console.log(res.data.bus);
     });
 
   };
 
   const getBusSchedule = async () => {
     await instance({
-      url: "busschedule/",
+      url: `busschedule?page=${currentPage}`,
       method: "GET",
     }).then((res) => {
-
-      setBusSchedule(res.data.busschedule);
-      console.log(res.data.busschedule);
+      setBusSchedule(res.data.busschedule.data);
+      setPage(res.data.busschedule);
+      // console.log(paginate);
     });
 
   };
@@ -78,6 +80,7 @@ const ScheduleList = () => {
   useEffect(() => {
     getData();
     getBusSchedule();
+    // eslint-disable-next-line
   }, [refresh]);
 
   const mappedOptions = busSelect.map((schedule) => {
@@ -89,7 +92,7 @@ const ScheduleList = () => {
   const mappedBusSchedule = busSchedule.map((busSchedule, index) => {
     return (
       <tr key={busSchedule.id}>
-        <td>{index + 1}</td>
+        <td className='bg-white text-black'>{index + 1}</td>
         <td>{busSchedule.take_off}</td>
         <td>{busSchedule.destination}</td>
         <td>{busSchedule.take_off_time}</td>
@@ -102,54 +105,59 @@ const ScheduleList = () => {
       </tr>
     );
   });
+  function pagination(index) {
+    setCurrentPage(index)
+    getBusSchedule();
+  };
+
   return (
     <div className='container py-5'>
       {alert ?
-      <Alert className='col-sm' key="success" variant="success"  onClose={() => setShow(false)} transition dismissible>
-        {alert}
-      </Alert>
-      :<div></div>}
+        <Alert className='col-sm' key="success" variant="success" onClose={() => setShow(false)} transition dismissible>
+          {alert}
+        </Alert>
+        : <div></div>}
       <div className='mb-3'>
         <h3 className="card-header d-flex justify-content-between align-items-center text-white">
           Bus Schedule List
-           <button type="button" className="btn btn-sm btn-secondary px-3 py-2" onClick={handleShow}>Add Bus</button>
+          <button type="button" className="btn btn-sm btn-secondary px-3 py-2" onClick={handleShow}>Add Bus</button>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton className='very-dark  text-white'>
               <Modal.Title>Add Bus Schedule</Modal.Title>
             </Modal.Header>
             <Modal.Body className='very-dark'>
-            <form className='very-dark text-white' onSubmit={handleSubmit}>
-            <div className="form-row">
-              <div className="form-group col-md-6 mb-2">
-                <label>Bus</label>
-                <select id="" className="form-control bg-dark text-white" name='bus' value={bus} onChange={e => setBus(e.target.value)}>
-                  <option>Choose a Bus</option>
-                  {mappedOptions}
-                </select>
-              </div>
-              <div className="form-group col-md-6 mb-2">
-                <label>Take Off Time</label>
-                <input className="form-control bg-dark text-white" name='take_off_time' value={takeOffTime} onChange={e => setTakeOffTime(e.target.value)} />
-              </div>
-              <div className="form-group col-md-6 mb-2">
-                <label>Drop Off Time</label>
-                <input className="form-control bg-dark text-white" name='drop_off_time' value={dropOffTime} onChange={e => setDropOffTime(e.target.value)} />
-              </div>
-            </div>
-            <div className="form-group col-md-6 mb-2">
-              <label>Take Off</label>
-              <input type="text" className="form-control bg-dark text-white" id="" placeholder="Ibadan" name='take_off' value={takeOff} onChange={e => setTakeOff(e.target.value)} />
-            </div>
-            <div className="form-group col-md-6 mb-2">
-              <label>Destination</label>
-              <input type="text" className="form-control bg-dark text-white" id="" placeholder="lagos" name='destination' value={destination} onChange={e => setDestination(e.target.value)} />
-            </div>
-            <div className="form-group col-md-6 mb-2">
-              <label>Ticket Price</label>
-              <input type="number" className="form-control bg-dark text-white" id="" placeholder="Input Price" name='ticketPrice' value={ticketPrice} onChange={e => setTicketPrice(e.target.value)} />
-            </div>
-            <button onClick={handleClose} type="submit" className="btn btn-secondary">Schedule</button>
-          </form>
+              <form className='very-dark text-white' onSubmit={handleSubmit}>
+                <div className="form-row">
+                  <div className="form-group col-md-6 mb-2">
+                    <label>Bus</label>
+                    <select id="" className="form-control bg-dark text-white" name='bus' value={bus} onChange={e => setBus(e.target.value)}>
+                      <option>Choose button Bus</option>
+                      {mappedOptions}
+                    </select>
+                  </div>
+                  <div className="form-group col-md-6 mb-2">
+                    <label>Take Off Time</label>
+                    <input className="form-control bg-dark text-white" name='take_off_time' value={takeOffTime} onChange={e => setTakeOffTime(e.target.value)} />
+                  </div>
+                  <div className="form-group col-md-6 mb-2">
+                    <label>Drop Off Time</label>
+                    <input className="form-control bg-dark text-white" name='drop_off_time' value={dropOffTime} onChange={e => setDropOffTime(e.target.value)} />
+                  </div>
+                </div>
+                <div className="form-group col-md-6 mb-2">
+                  <label>Take Off</label>
+                  <input type="text" className="form-control bg-dark text-white" id="" placeholder="Ibadan" name='take_off' value={takeOff} onChange={e => setTakeOff(e.target.value)} />
+                </div>
+                <div className="form-group col-md-6 mb-2">
+                  <label>Destination</label>
+                  <input type="text" className="form-control bg-dark text-white" id="" placeholder="lagos" name='destination' value={destination} onChange={e => setDestination(e.target.value)} />
+                </div>
+                <div className="form-group col-md-6 mb-2">
+                  <label>Ticket Price</label>
+                  <input type="number" className="form-control bg-dark text-white" id="" placeholder="Input Price" name='ticketPrice' value={ticketPrice} onChange={e => setTicketPrice(e.target.value)} />
+                </div>
+                <button onClick={handleClose} type="submit" className="btn btn-secondary">Schedule</button>
+              </form>
             </Modal.Body>
           </Modal>
         </h3>
@@ -173,6 +181,12 @@ const ScheduleList = () => {
           {mappedBusSchedule}
         </tbody>
       </Table>
+      <nav aria-label="Page navigation example">
+        <ul className="pagination justify-content-center">
+          {[...Array.from(Array(page.last_page).keys())].map((num, index) => <li className={`page-item ${currentPage == index + 1 ? "active" : ""}`} key={index}><button onClick={() => { pagination(index + 1); }} className="page-link">{index + 1}</button></li>)}
+        </ul>
+        <h5 className='text-center text-white'>showing range {page.from} - {page.to} of {page.total}</h5>
+      </nav>
     </div>
   )
 }
