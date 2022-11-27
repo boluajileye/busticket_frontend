@@ -3,9 +3,13 @@ import Table from 'react-bootstrap/Table';
 import instance from '../api/Api_instance';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
+import NavBar from '../components/Navbar';
+import Footer from '../components/Footer';
+// import Skeleton from "react-loading-skeleton";
 /* eslint eqeqeq: 0 */
 
 const ScheduleList = () => {
+  // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [page, setPage] = useState([]);
   const [bus, setBus] = useState("");
@@ -111,83 +115,89 @@ const ScheduleList = () => {
   };
 
   return (
-    <div className='container py-5'>
-      {alert ?
-        <Alert className='col-sm' key="success" variant="success" onClose={() => setShow(false)} transition dismissible>
-          {alert}
-        </Alert>
-        : <div></div>}
-      <div className='mb-3'>
-        <h3 className="card-header d-flex justify-content-between align-items-center text-white">
-          Bus Schedule List
-          <button type="button" className="btn btn-sm btn-secondary px-3 py-2" onClick={handleShow}>Add Bus</button>
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton className='very-dark  text-white'>
-              <Modal.Title>Add Bus Schedule</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='very-dark'>
-              <form className='very-dark text-white' onSubmit={handleSubmit}>
-                <div className="form-row">
-                  <div className="form-group col-md-6 mb-2">
-                    <label>Bus</label>
-                    <select id="" className="form-control bg-dark text-white" name='bus' value={bus} onChange={e => setBus(e.target.value)}>
-                      <option>Choose button Bus</option>
-                      {mappedOptions}
-                    </select>
-                  </div>
-                  <div className="form-group col-md-6 mb-2">
-                    <label>Take Off Time</label>
-                    <input className="form-control bg-dark text-white" name='take_off_time' value={takeOffTime} onChange={e => setTakeOffTime(e.target.value)} />
-                  </div>
-                  <div className="form-group col-md-6 mb-2">
-                    <label>Drop Off Time</label>
-                    <input className="form-control bg-dark text-white" name='drop_off_time' value={dropOffTime} onChange={e => setDropOffTime(e.target.value)} />
-                  </div>
-                </div>
-                <div className="form-group col-md-6 mb-2">
-                  <label>Take Off</label>
-                  <input type="text" className="form-control bg-dark text-white" id="" placeholder="Ibadan" name='take_off' value={takeOff} onChange={e => setTakeOff(e.target.value)} />
-                </div>
-                <div className="form-group col-md-6 mb-2">
-                  <label>Destination</label>
-                  <input type="text" className="form-control bg-dark text-white" id="" placeholder="lagos" name='destination' value={destination} onChange={e => setDestination(e.target.value)} />
-                </div>
-                <div className="form-group col-md-6 mb-2">
-                  <label>Ticket Price</label>
-                  <input type="number" className="form-control bg-dark text-white" id="" placeholder="Input Price" name='ticketPrice' value={ticketPrice} onChange={e => setTicketPrice(e.target.value)} />
-                </div>
-                <button onClick={handleClose} type="submit" className="btn btn-secondary">Schedule</button>
-              </form>
-            </Modal.Body>
-          </Modal>
-        </h3>
+    <>
+      <NavBar />
+      <div className='w-100'>
+        <div className='container py-5'>
+          {alert ?
+            <Alert className='col-sm' key="success" variant="success" onClose={() => setShow(false)} transition dismissible>
+              {alert}
+            </Alert>
+            : <div></div>}
+          <div className='mb-3'>
+            <h3 className="card-header d-flex justify-content-between align-items-center text-white">
+              Bus Schedule List
+              <button type="button" className="btn btn-sm btn-secondary px-3 py-2" onClick={handleShow}>Add Bus</button>
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton className='very-dark  text-white'>
+                  <Modal.Title>Add Bus Schedule</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className='very-dark'>
+                  <form className='very-dark text-white' onSubmit={handleSubmit}>
+                    <div className="form-row">
+                      <div className="form-group col-md-6 mb-2">
+                        <label>Bus</label>
+                        <select id="" className="form-control bg-dark text-white" name='bus' value={bus} onChange={e => setBus(e.target.value)}>
+                          <option>Choose button Bus</option>
+                          {mappedOptions}
+                        </select>
+                      </div>
+                      <div className="form-group col-md-6 mb-2">
+                        <label>Take Off Time</label>
+                        <input className="form-control bg-dark text-white" name='take_off_time' value={takeOffTime} onChange={e => setTakeOffTime(e.target.value)} />
+                      </div>
+                      <div className="form-group col-md-6 mb-2">
+                        <label>Drop Off Time</label>
+                        <input className="form-control bg-dark text-white" name='drop_off_time' value={dropOffTime} onChange={e => setDropOffTime(e.target.value)} />
+                      </div>
+                    </div>
+                    <div className="form-group col-md-6 mb-2">
+                      <label>Take Off</label>
+                      <input type="text" className="form-control bg-dark text-white" id="" placeholder="Ibadan" name='take_off' value={takeOff} onChange={e => setTakeOff(e.target.value)} />
+                    </div>
+                    <div className="form-group col-md-6 mb-2">
+                      <label>Destination</label>
+                      <input type="text" className="form-control bg-dark text-white" id="" placeholder="lagos" name='destination' value={destination} onChange={e => setDestination(e.target.value)} />
+                    </div>
+                    <div className="form-group col-md-6 mb-2">
+                      <label>Ticket Price</label>
+                      <input type="number" className="form-control bg-dark text-white" id="" placeholder="Input Price" name='ticketPrice' value={ticketPrice} onChange={e => setTicketPrice(e.target.value)} />
+                    </div>
+                    <button onClick={handleClose} type="submit" className="btn btn-secondary">Schedule</button>
+                  </form>
+                </Modal.Body>
+              </Modal>
+            </h3>
+          </div>
+          <Table responsive striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th className='bg-white text-black'>S/N</th>
+                <th className='bg-white text-black'>Take Off</th>
+                <th className='bg-white text-black'>Destination</th>
+                <th className='bg-white text-black'>Take Off Time</th>
+                <th className='bg-white text-black'>Drop Off Time</th>
+                <th className='bg-white text-black'>Ticket Price</th>
+                <th className='bg-white text-black'>Company Name</th>
+                <th className='bg-white text-black'>License Plate</th>
+                <th className='bg-white text-black'>Driver Name</th>
+                <th className='bg-white text-black'>Bus Capacity</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mappedBusSchedule}
+            </tbody>
+          </Table>
+          <nav aria-label="Page navigation example">
+            <ul className="pagination justify-content-center">
+              {[...Array.from(Array(page.last_page).keys())].map((num, index) => <li className={`page-item ${currentPage == index + 1 ? "active" : ""}`} key={index}><button onClick={() => { pagination(index + 1); }} className="page-link">{index + 1}</button></li>)}
+            </ul>
+            <h5 className='text-center text-white'>showing range {page.from} - {page.to} of {page.total}</h5>
+          </nav>
+        </div>
       </div>
-      <Table responsive striped bordered hover variant="dark">
-        <thead>
-          <tr>
-            <th className='bg-white text-black'>S/N</th>
-            <th className='bg-white text-black'>Take Off</th>
-            <th className='bg-white text-black'>Destination</th>
-            <th className='bg-white text-black'>Take Off Time</th>
-            <th className='bg-white text-black'>Drop Off Time</th>
-            <th className='bg-white text-black'>Ticket Price</th>
-            <th className='bg-white text-black'>Company Name</th>
-            <th className='bg-white text-black'>License Plate</th>
-            <th className='bg-white text-black'>Driver Name</th>
-            <th className='bg-white text-black'>Bus Capacity</th>
-          </tr>
-        </thead>
-        <tbody>
-          {mappedBusSchedule}
-        </tbody>
-      </Table>
-      <nav aria-label="Page navigation example">
-        <ul className="pagination justify-content-center">
-          {[...Array.from(Array(page.last_page).keys())].map((num, index) => <li className={`page-item ${currentPage == index + 1 ? "active" : ""}`} key={index}><button onClick={() => { pagination(index + 1); }} className="page-link">{index + 1}</button></li>)}
-        </ul>
-        <h5 className='text-center text-white'>showing range {page.from} - {page.to} of {page.total}</h5>
-      </nav>
-    </div>
+      <Footer />
+    </>
   )
 }
 

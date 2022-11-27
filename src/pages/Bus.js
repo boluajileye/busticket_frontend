@@ -3,9 +3,13 @@ import Table from 'react-bootstrap/Table';
 import instance from '../api/Api_instance';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
+import NavBar from '../components/Navbar';
+import Footer from '../components/Footer';
+// import Skeleton from "react-loading-skeleton";
 /* eslint eqeqeq: 0 */
 
 const Bus = () => {
+  // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [page, setPage] = useState([]);
   const [companyName, setCompanyName] = useState("");
@@ -85,71 +89,77 @@ const Bus = () => {
   };
 
   return (
-    <div className='container py-5'>
-      {alert ?
-        <Alert className='col-sm' key="success" variant="success" onClose={() => setShow(false)} transition dismissible>
-          {alert}
-        </Alert>
-        : <div></div>}
-      <div className='mb-3'>
+    <>
+      <NavBar />
+      <div className='w-100'>
+        <div className='container py-5'>
+          {alert ?
+            <Alert className='col-sm' key="success" variant="success" onClose={() => setShow(false)} transition dismissible>
+              {alert}
+            </Alert>
+            : <div></div>}
+          <div className='mb-3'>
 
-        <h3 className="card-header d-flex justify-content-between align-items-center text-white">
-          Bus List
+            <h3 className="card-header d-flex justify-content-between align-items-center text-white">
+              Bus List
 
-          <button type="button" className="btn btn-sm btn-secondary px-3 py-2" onClick={handleShow}>Add Bus</button>
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton className='very-dark  text-white'>
-              <Modal.Title>Add Bus</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='very-dark'>
-              <form className='very-dark text-white' onSubmit={handleSubmit}>
-                <div className="form-group col-md-6 mb-2">
-                  <label>Company Name</label>
-                  <input type="text" className="form-control bg-dark text-white" id="" name='companyName' value={companyName}
-                    onChange={e => setCompanyName(e.target.value)} />
-                </div>
-                <div className="form-group col-md-6 mb-2">
-                  <label>License Plate</label>
-                  <input type="text" className="form-control bg-dark text-white" placeholder="ABC-123-DE" name='licensePlate' value={licensePlate}
-                    onChange={e => setLicensePlate(e.target.value)} />
-                </div>
-                <div className="form-group col-md-6 mb-2">
-                  <label>Driver Name</label>
-                  <input type="text" className="form-control bg-dark text-white" id="" name='driverName' value={driverName}
-                    onChange={e => setDriverName(e.target.value)} />
-                </div>
-                <div className="form-group col-md-6 mb-2">
-                  <label>Bus Capacity</label>
-                  <input type="number" className="form-control bg-dark text-white" id="" name='busCapacity' value={busCapacity}
-                    onChange={e => setBusCapacity(e.target.value)} />
-                </div>
-                <button onClick={handleClose} type="submit" className="btn btn-secondary">Add Bus</button>
-              </form>
-            </Modal.Body>
-          </Modal>
-        </h3>
+              <button type="button" className="btn btn-sm btn-secondary px-3 py-2" onClick={handleShow}>Add Bus</button>
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton className='very-dark  text-white'>
+                  <Modal.Title>Add Bus</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className='very-dark'>
+                  <form className='very-dark text-white' onSubmit={handleSubmit}>
+                    <div className="form-group col-md-6 mb-2">
+                      <label>Company Name</label>
+                      <input type="text" className="form-control bg-dark text-white" id="" name='companyName' value={companyName}
+                        onChange={e => setCompanyName(e.target.value)} />
+                    </div>
+                    <div className="form-group col-md-6 mb-2">
+                      <label>License Plate</label>
+                      <input type="text" className="form-control bg-dark text-white" placeholder="ABC-123-DE" name='licensePlate' value={licensePlate}
+                        onChange={e => setLicensePlate(e.target.value)} />
+                    </div>
+                    <div className="form-group col-md-6 mb-2">
+                      <label>Driver Name</label>
+                      <input type="text" className="form-control bg-dark text-white" id="" name='driverName' value={driverName}
+                        onChange={e => setDriverName(e.target.value)} />
+                    </div>
+                    <div className="form-group col-md-6 mb-2">
+                      <label>Bus Capacity</label>
+                      <input type="number" className="form-control bg-dark text-white" id="" name='busCapacity' value={busCapacity}
+                        onChange={e => setBusCapacity(e.target.value)} />
+                    </div>
+                    <button onClick={handleClose} type="submit" className="btn btn-secondary">Add Bus</button>
+                  </form>
+                </Modal.Body>
+              </Modal>
+            </h3>
+          </div>
+          <Table responsive striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th className='bg-white text-black'>S/N</th>
+                <th className='bg-white text-black'>Company Name</th>
+                <th className='bg-white text-black'>License Plate</th>
+                <th className='bg-white text-black'>Driver Name</th>
+                <th className='bg-white text-black'>Bus Capacity</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mappedBus}
+            </tbody>
+          </Table>
+          <nav aria-label="Page navigation example">
+            <ul className="pagination justify-content-center">
+              {[...Array.from(Array(page.last_page).keys())].map((num, index) => <li className={`page-item ${currentPage == index + 1 ? "active" : ""}`} key={index}><button onClick={() => { pagination(index + 1); }} className="page-link">{index + 1}</button></li>)}
+            </ul>
+            <h5 className='text-center text-white'>showing range {page.from} - {page.to} of {page.total}</h5>
+          </nav>
+        </div>
       </div>
-      <Table responsive striped bordered hover variant="dark">
-        <thead>
-          <tr>
-            <th className='bg-white text-black'>S/N</th>
-            <th className='bg-white text-black'>Company Name</th>
-            <th className='bg-white text-black'>License Plate</th>
-            <th className='bg-white text-black'>Driver Name</th>
-            <th className='bg-white text-black'>Bus Capacity</th>
-          </tr>
-        </thead>
-        <tbody>
-          {mappedBus}
-        </tbody>
-      </Table>
-      <nav aria-label="Page navigation example">
-        <ul className="pagination justify-content-center">
-          {[...Array.from(Array(page.last_page).keys())].map((num, index) => <li className={`page-item ${currentPage == index + 1 ? "active" : ""}`} key={index}><button onClick={() => { pagination(index + 1); }} className="page-link">{index + 1}</button></li>)}
-        </ul>
-        <h5 className='text-center text-white'>showing range {page.from} - {page.to} of {page.total}</h5>
-      </nav>
-    </div>
+      <Footer />
+    </>
   )
 }
 
