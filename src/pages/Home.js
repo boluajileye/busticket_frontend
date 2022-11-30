@@ -3,11 +3,19 @@ import Table from 'react-bootstrap/Table';
 import instance from '../api/Api_instance';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 // import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 /* eslint eqeqeq: 0 */
 
 const Home = () => {
+    const navigate = useNavigate()
+    useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"))
+    if (user == null) {
+        navigate("/login")
+    }
+    });
     // const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [page, setPage] = useState([]);

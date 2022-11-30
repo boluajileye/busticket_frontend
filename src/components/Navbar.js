@@ -2,15 +2,20 @@ import React from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link } from 'react-router-dom';
-// import Schedule from './Schedule';
+import { Link, useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 
 const NavBar = () => {
+    const navigate = useNavigate()
+    const logout = () => {
+        localStorage.clear()
+        navigate("/login")
+    }
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand><Link to="/"className="no-underline text-white">DANFO</Link></Navbar.Brand>
+                <Navbar.Brand><Link to="/" className="no-underline text-white">DANFO</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto text-white">
@@ -30,7 +35,9 @@ const NavBar = () => {
                     </Nav>
                     <Nav>
                         <Nav.Link>
-                            {/* <Schedule/> */}
+                            <Button variant="secondary" onClick={logout}>
+                                Log Out
+                            </Button>
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
