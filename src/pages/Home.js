@@ -10,15 +10,15 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
     const navigate = useNavigate()
-    useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"))
-    if (user == null) {
-        navigate("/login")
-    }
-    if (user?.role === 1) {
-        navigate("/home");
-        } 
-    });
+    // useEffect(() => {
+    // const user = JSON.parse(localStorage.getItem("user"))
+    // if (user == null) {
+    //     navigate("/login")
+    // }
+    // if (user?.role === 1) {
+    //     navigate("/home");
+    //     } 
+    // });
     // const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [page, setPage] = useState([]);
@@ -52,10 +52,6 @@ const Home = () => {
                 <td>{busTicket.bus_schedule.drop_off_time}</td>
                 <td>{busTicket.price}</td>
                 <td>{busTicket.reference}</td>
-                {/* <td className='text-capitalize'>{busTicket.bus.companyName}</td>
-                <td className='uppercase'>{busTicket.bus.licensePlate}</td>
-                <td>{busTicket.bus.driverName}</td>
-                <td>{busTicket.bus.busCapacity}</td> */}
             </tr>
         );
     });

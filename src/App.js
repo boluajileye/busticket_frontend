@@ -10,6 +10,7 @@ import ScheduleList from './pages/ScheduleList';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import UserHome from './pages/UserHome';
+import ScanTicket from './pages/ScanTicket';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/bus' element={<Bus />} />
         <Route path='/schedule' element={<ScheduleList />} />
+        <Route path='/scan_ticket' element={<ScanTicket/>} />
         <Route path='/home' element={<UserHome />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />

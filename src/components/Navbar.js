@@ -14,7 +14,7 @@ const NavBar = () => {
     }
     
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand="lg" className='card-color'>
             <Container>
                 <Navbar.Brand><Link to="/" className="no-underline text-white">DANFO</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -22,6 +22,7 @@ const NavBar = () => {
                     <Nav className="me-auto text-white">
                         <Nav.Link as={Link} to="/bus"><span className="no-underline text-white">Bus List</span></Nav.Link>
                         <Nav.Link as={Link} to="/schedule"><span className="no-underline text-white">Schedule List</span></Nav.Link>
+                        <Nav.Link as={Link} to="/scan_ticket"><span className="no-underline text-white">Scan Ticket</span></Nav.Link>
                         {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                             <NavDropdown.Item to="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item to="#action/3.2">

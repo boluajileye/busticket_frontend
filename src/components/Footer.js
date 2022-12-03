@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
     return (
-        <footer className='bg-dark fixed-bottom'>
+        <footer className='card-color fixed-bottom'>
             <div className="row">
                 <div className="container-filled py-3">
                     <div className="copyright text-center text-white"> Copyright 2022 | All Rights Reserved by <a href='https://boluajileye.com' >BoluAjileye</a>.</div>
