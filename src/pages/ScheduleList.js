@@ -16,6 +16,9 @@ const ScheduleList = () => {
     if (user == null) {
         navigate("/login")
     }
+    if (user.role === 1) {
+      navigate("/home");
+      } 
     });
   // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);

@@ -12,6 +12,7 @@ const NavBar = () => {
         localStorage.clear()
         navigate("/login")
     }
+    
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>

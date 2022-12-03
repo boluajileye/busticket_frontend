@@ -15,6 +15,9 @@ const Home = () => {
     if (user == null) {
         navigate("/login")
     }
+    if (user?.role === 1) {
+        navigate("/home");
+        } 
     });
     // const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -40,17 +43,6 @@ const Home = () => {
     const mappedBusTicket = busTicket.map((busTicket, index) => {
         return (
             <tr key={busTicket.id}>
-                {/* <SkeletonTheme color="grey" highlightColor="#444">
-                <td><Skeleton/></td>
-                <td><Skeleton/></td>
-                <td><Skeleton/></td>
-                <td><Skeleton/></td>
-                <td><Skeleton/></td>
-                <td><Skeleton/></td>
-                <td><Skeleton/></td>
-                <td><Skeleton/></td>
-                <td><Skeleton/></td>
-                </SkeletonTheme> */}
                 <td className='bg-white text-black'>{index + 1}</td>
                 <td>{busTicket.user.name}</td>
                 <td>{busTicket.user.email}</td>
@@ -67,28 +59,7 @@ const Home = () => {
             </tr>
         );
     });
-
-
-    // const loadingBusTicket = busTicket.map((busTicket, index) => {
-    //     return (
-    //         <tr key={busTicket.id}>
-    //             <td className='bg-white text-black'>{index + 1}</td>
-    //             <td>{busTicket.user.name}</td>
-    //             <td>{busTicket.user.email}</td>
-    //             <td>{busTicket.bus_schedule.take_off}</td>
-    //             <td>{busTicket.bus_schedule.destination}</td>
-    //             <td>{busTicket.bus_schedule.take_off_time}</td>
-    //             <td>{busTicket.bus_schedule.drop_off_time}</td>
-    //             <td>{busTicket.price}</td>
-    //             <td>{busTicket.reference}</td> 
-    //             {/* <td className='text-capitalize'>{busTicket.bus.companyName}</td>
-    //             <td className='uppercase'>{busTicket.bus.licensePlate}</td>
-    //             <td>{busTicket.bus.driverName}</td>
-    //             <td>{busTicket.bus.busCapacity}</td> */}
-    //         </tr>
-    //     );
-    // });
-
+    
     function pagination(index) {
         setCurrentPage(index)
         getData();

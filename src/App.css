@@ -41,17 +41,22 @@
 .very-dark {
   background-color: #000000;
 }
-.pagination > li > button,
-.pagination > li > span {
-    color: #6c757d; 
+
+.pagination>li>button,
+.pagination>li>span {
+  color: #6c757d;
 }
 
-.pagination > .active > button,
-.pagination > .active > button:focus,
-.pagination > .active > button:hover,
-.pagination > .active > span,
-.pagination > .active > span:focus,
-.pagination > .active > span:hover {
-    background-color: #6c757d;
-    border-color: #6c757d;
+.pagination>.active>button,
+.pagination>.active>button:focus,
+.pagination>.active>button:hover,
+.pagination>.active>span,
+.pagination>.active>span:focus,
+.pagination>.active>span:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.card-color {
+  background: linear-gradient(90deg, #5D54A4, #7C78B8);
 }
