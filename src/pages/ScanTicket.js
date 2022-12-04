@@ -1,11 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+// import { useNavigate } from 'react-router-dom'
 import Footer from '../components/Footer'
 import NavBar from '../components/Navbar'
-import { QrReader } from 'react-qr-reader';
+// import { Html5Qrcode } from "html5-qrcode";
+const qrConfig = { fps: 10, qrbox: { width: 300, height: 300 } };
+const brConfig = { fps: 10, qrbox: { width: 300, height: 150 } };
+let html5QrCode;
 
-const ScanTicket = () => {
-    const navigate = useNavigate()
+const ScanTicket = (props) => {
+    // const navigate = useNavigate()
     // useEffect(() => {
     // const user = JSON.parse(localStorage.getItem("user"))
     // if (user == null) {
@@ -15,54 +18,70 @@ const ScanTicket = () => {
     //     navigate("/home");
     //     } 
     // });
-    const [result, setResult] = useState('Hold your camera steady to scan');
 
-    const scanner = useRef(null)
-    const handleError = (err) => {
-        console.err(err)
-    }
+    useEffect(() => {
+        // html5QrCode = new Html5Qrcode("reader");
+    }, []);
 
-    const handleScan = (result) => {
-        if (result) {
-            setResult(result)
+    const handleClickAdvanced = () => {
+        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+            props.onResult(decodedText);
+            handleStop();
+        };
+        html5QrCode.start(
+            { facingMode: "environment" },
+            props.type === "QR" ? qrConfig : brConfig,
+            qrCodeSuccessCallback
+        );
+    };
+
+    const handleStop = () => {
+        try {
+            html5QrCode
+                .stop()
+                .then((res) => {
+                    html5QrCode.clear();
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+        } catch (err) {
+            console.log(err);
         }
-    }
-
-    const previewStyle = {
-        height: 240,
-        width: 320,
-    }
-
-    const resultt = {
-        height: 240,
-        width: 320,
-    }
+    };
 
     return (
         <>
             <NavBar />
             <div id="cards_landscape_wrap-2">
                 <div className="container">
+                <div style={{ position: "relative" }}>
+                                            <div id="reader" width="100%" />
+                                            <button onClick={() => handleClickAdvanced()}>
+                                                click pro {props.type}
+                                            </button>
+                                            <button onClick={() => handleStop()}>stop pro</button>
+                                        </div>
                     <div className="d-flex align-items-center justify-content-center">
                         <div className="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                                <div className="card-flyer">
-                                    <div className="text-box">
-                                        <div className="image-box">
-                                            <QrReader
-                                                delay={500}
-                                                style={previewStyle}
-                                                onError={handleError}
-                                                onScan={handleScan}
-                                                ref={node => { scanner = node; }}
-                                            />
-                                        </div>
-                                        <div className="text-container">
-                                            <h6>{result}</h6>
-                                            <button onPress={() => scanner.reactivate()} type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">switch camera</button>
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+                            <div className="card-flyer">
+                                <div className="text-box">
+                                    <div className="image-box">
+                                        <div style={{ position: "relative" }}>
+                                            <div id="reader" width="100%" />
+                                            <button onClick={() => handleClickAdvanced()}>
+                                                click pro {props.type}
+                                            </button>
+                                            <button onClick={() => handleStop()}>stop pro</button>
                                         </div>
                                     </div>
+                                    <div className="text-container">
+                                        {/* <span className='text-white'>{result}</span>
+                                        <button onClick={closeCam} type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">switch camera</button> */}
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+                                    </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
