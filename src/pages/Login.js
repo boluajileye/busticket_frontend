@@ -55,7 +55,7 @@ const Login = () => {
             <ToastContainer />
             <div className="authscreen">
                 <div className="authscreen__content">
-                {/* <h1 className='text-dark text-center'>DANFO</h1> */}
+                <h1 className='text-dark text-center'>DANFO</h1>
                     <form className="authlogin" onSubmit={handleSubmit}>
                         <div className="authlogin__field">
                             <i className="authlogin__icon fas fa-user"></i>

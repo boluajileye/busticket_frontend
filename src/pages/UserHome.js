@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-// import { useNavigate } from 'react-router-dom';
-import NavBar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -8,15 +7,16 @@ import instance from '../api/Api_instance';
 import { QRCode } from 'react-qrcode-logo';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import UserNav from '../components/UserNav';
 
 const UserHome = () => {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem("user"))
-  // useEffect(() => {
-  //   if (user == null) {
-  //     navigate("/login")
-  //   }
-  // });
+  useEffect(() => {
+    if (user == null) {
+      navigate("/login")
+    }
+  });
   const userId = user?.user.id
   console.log(userId)
 
@@ -248,7 +248,7 @@ const UserHome = () => {
 
   return (
     <>
-      <NavBar />
+      <UserNav />
       <div className="container pt-2">
         <Button variant="primary" onClick={handleShow}>
           Buy Ticket
