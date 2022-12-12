@@ -15,6 +15,7 @@
     "react-datetime-picker": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-loading-skeleton": "^3.1.0",
+    "react-qrcode-logo": "^2.8.0",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.1",
