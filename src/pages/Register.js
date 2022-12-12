@@ -41,7 +41,7 @@ const Register = () => {
           })
           .catch(function (error) {
             // console.log(error.response.data);
-            toast.error(error.response.data.message.email[0], {
+            toast.error("User Registration Failed", {
                 position: toast.POSITION.TOP_RIGHT
               });
             setPassword("")

@@ -18,7 +18,6 @@ const UserHome = () => {
     }
   });
   const userId = user?.user.id
-  console.log(userId)
 
 
   const [show, setShow] = useState(false);
@@ -33,7 +32,6 @@ const UserHome = () => {
       method: "GET",
     }).then((res) => {
       setTicket(res.data.bus)
-      console.log(ticket)
     });
 
   };
